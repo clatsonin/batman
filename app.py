@@ -9,8 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()  # Take environment variables from .env
 
 # Ensure the API key is set
-os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+genai.configure(api_key="AIzaSyDOOd4ZmUPidCsW2gHxewR9kk3W3nc1lns")
 
 # Function to load OpenAI model and get responses
 def get_gemini_response(input_text, image):
