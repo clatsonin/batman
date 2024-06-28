@@ -5,11 +5,11 @@ from PIL import Image
 import io
 import streamlit as st
 from dotenv import load_dotenv
+import http.client  # Importing http.client for making the API call
 
 load_dotenv()  # Take environment variables from .env
 
 # Ensure the API key is set
-
 genai.configure(api_key="AIzaSyDOOd4ZmUPidCsW2gHxewR9kk3W3nc1lns")
 
 # Function to load OpenAI model and get responses
@@ -24,8 +24,6 @@ def get_gemini_response(input_text, image):
 # Function to prompt user to input location manually
 def get_location_input():
     return st.text_input("Enter your current location: ", key="location_input", max_chars=100, )
-
-
 
 # Create the model
 generation_config = {
@@ -58,7 +56,6 @@ model = genai.GenerativeModel(
     safety_settings=safety_settings,
     generation_config=generation_config,
 )
-
 
 chat_session = model.start_chat(history=[])
 
@@ -107,25 +104,24 @@ if location and col1.button("Generate ⚡"):
 
 # Fetch helpline numbers based on location if provided
 if location:
-    url = "https://google-search74.p.rapidapi.com/"
-    querystring = {
-        "query": f"{location} helpline number",
-        "limit": "5",
-        "related_keywords": "true"
-    }
+    conn = http.client.HTTPSConnection("google-news13.p.rapidapi.com")
 
     headers = {
-        "X-RapidAPI-Key": "6786ff7868msh1bd6504ddfdda82p1331eejsndd79c4275b12",
-        "X-RapidAPI-Host": "google-search74.p.rapidapi.com"
+        'x-rapidapi-key': "7ff95f6aa7mshbf13d3d9bd00c18p1e475fjsnf097bb0db00b",
+        'x-rapidapi-host': "google-news13.p.rapidapi.com"
     }
 
-    response = requests.get(url, headers=headers, params=querystring)
+    conn.request("GET", f"/business?lr=en-US", headers=headers)
 
-    # Extract JSON response
-    data = response.json()
+    res = conn.getresponse()
+    data = res.read()
+
+    # Decode and parse JSON response
+    data = data.decode("utf-8")
+    results = json.loads(data).get("results", [])
 
     # Extract descriptions
-    descriptions = [result['description'] for result in data['results']]
+    descriptions = [result['description'] for result in results]
 
     # Optionally store the descriptions in a variable for further use
     descriptions_text = "\n".join(descriptions)
@@ -138,7 +134,3 @@ if location:
     # Display the response from the model
     st.text_area("Generated Response", response.text,
                  height=200, max_chars=500)
-
-
-
-
