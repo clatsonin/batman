@@ -63,11 +63,10 @@ model = genai.GenerativeModel(
 chat_session = model.start_chat(history=[])
 
 # Initialize our Streamlit app
-st.set_page_config(page_title="Crisis Snap📷")
+st.set_page_config(page_title="The Batman🦇🔥")
 
-st.header("Crisis Snap📷")
-st.subheader("Instant Insights for a Safer World")
-    
+st.header("The Batman🦇🔥")
+
 # Create two columns with centered alignment
 col1, col2 = st.columns([1, 1])
 
@@ -116,7 +115,7 @@ if location:
     }
 
     headers = {
-        "X-RapidAPI-Key": "7ff95f6aa7mshbf13d3d9bd00c18p1e475fjsnf097bb0db00b",
+        "X-RapidAPI-Key": "6786ff7868msh1bd6504ddfdda82p1331eejsndd79c4275b12",
         "X-RapidAPI-Host": "google-search74.p.rapidapi.com"
     }
 
@@ -137,7 +136,7 @@ if location:
     )
 
     # Display the response from the model
-    st.text_area("Helpful List", response.text,
+    st.text_area("Generated Response", response.text,
                  height=200, max_chars=500)
 
 
